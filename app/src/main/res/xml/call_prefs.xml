@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="broadcast"
+        android:summary="@string/enable_call_reader_summary"
+        android:title="@string/enable_call_reader"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/aSwitch" />
+    <EditTextPreference android:defaultValue=""
+        android:key="message"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:title="@string/custom_message"
+        android:summary="@string/custom_message_summary"
+        android:id="@+id/message" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="ignoreOnCall"
+        android:summary="@string/ignore_already_oncall_summary"
+        android:title="@string/ignore_already_oncall"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/ignoreOnCall" />
+    <ListPreference
+        android:title="@string/language"
+        android:summary="@string/call_reader_voice_language"
+        android:key="language"
+        android:defaultValue="ENGLISH"
+        android:entries="@array/langs"
+        android:entryValues="@array/langs" />
+    <Preference
+        android:key="testSpeech"
+        android:title="@string/test_speech"
+        android:summary="@string/test_speech_summary" />
+    <Preference
+        android:key="developer"
+        android:title="@string/name"
+        android:summary="@string/email" />
+</PreferenceScreen>

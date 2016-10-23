@@ -3,6 +3,7 @@ package yuown.callreader;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 /**
@@ -23,10 +24,10 @@ public class Popup extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
         setContentView(R.layout.activity_popup);
-        moveTaskToBack(true);
+//        moveTaskToBack(true);
 
         speechView = this;
         Intent startingIntent = this.getIntent();
@@ -34,10 +35,12 @@ public class Popup extends Activity {
         message = startingIntent.getStringExtra("message");
 
         textSpeaker = TextSpeaker.getInstance(getApplicationContext());
+        textSpeaker.setActivity(this);
         textSpeaker.speakText(message, language);
     }
 
     public void stopSpeaking() {
+        Log.d("mLog", "Stopped");
         textSpeaker.stopSpeaking();
         this.finish();
     }

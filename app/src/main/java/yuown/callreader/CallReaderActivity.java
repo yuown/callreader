@@ -2,12 +2,15 @@ package yuown.callreader;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import yuown.callreader.utils.Utils;
 
 public class CallReaderActivity extends AppCompatActivity {
 
@@ -47,6 +50,7 @@ public class CallReaderActivity extends AppCompatActivity {
                     if(!enabled) {
                         state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
                     }
+                    Utils.writeLog("Broadcast enable: " + enabled);
                     packageManager.setComponentEnabledSetting(callReceiver, state, PackageManager.DONT_KILL_APP);
                 }
             }
@@ -56,5 +60,11 @@ public class CallReaderActivity extends AppCompatActivity {
 
     protected final void testSpeech() {
         textSpeaker.testSpeech(sharedPreferences.getString("message", ""), sharedPreferences.getString("language", ""));
+    }
+
+    public void logs() {
+        Intent t = new Intent();
+        t.setClass(getApplicationContext(), LogsActivity.class);
+        startActivity(t);
     }
 }

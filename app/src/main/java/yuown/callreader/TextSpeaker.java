@@ -2,9 +2,11 @@ package yuown.callreader;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import yuown.callreader.utils.Utils;
@@ -30,10 +32,15 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
 
     private String language;
 
+    private Popup activity;
+    private Bundle params;
+
     private TextSpeaker(Context context) {
         this.context = context;
         mTts = new TextToSpeech(context, this);
         audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        params = new Bundle();
+        params.putString(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(audioManager.STREAM_RING));
     }
 
     public static TextSpeaker getInstance(Context context) {
@@ -46,10 +53,13 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
     @Override
     public void onInit(int status) {
         initStatus = status;
-        speakOut(message, language);
+        Log.d("mLog", "TTS Status: " + initStatus);
+        if(initStatus == TextToSpeech.SUCCESS) {
+            //speakOut(this.message, this.language);
+        }
     }
 
-    public void testSpeech(final String testField, final String language) {
+    public void testSpeech(String message, String language) {
         if(inProgress) {
             if (!mTts.isSpeaking()) {
                 inProgress = false;
@@ -57,7 +67,6 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
         }
         if (!inProgress) {
             inProgress = true;
-            String message = testField;
             if (message.trim().length() == 0) {
                 message = "Testing Text to Speech Engine";
             }
@@ -69,9 +78,10 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
     }
 
     public void speakText(String message, String language) {
-        Utils.showMessage(context, message);
+        this.message = message;
+        this.language = language;
         if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
-            speakOut(message, language);
+            speakOut(this.message, this.language);
         }
     }
 
@@ -85,12 +95,9 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
 
     private void speakOut(String message, String language) {
         decideLanguage(language);
-        this.message = message;
-        this.language = language;
-        if (initStatus == TextToSpeech.SUCCESS) {
-            mTts.speak(message, TextToSpeech.QUEUE_FLUSH, null, null);
-        } else {
-            Utils.showMessage(context, "Couldn't Speak! - S: " + initStatus);
+        if(null != message && message.trim().length() > 0) {
+            Utils.showMessage(context, message);
+            mTts.speak(message, TextToSpeech.QUEUE_FLUSH, params, null);
         }
     }
 
@@ -100,5 +107,9 @@ class TextSpeaker implements TextToSpeech.OnInitListener {
         } catch (Exception e) {
             mTts.setLanguage(Locale.ENGLISH);
         }
+    }
+
+    public void setActivity(Popup activity) {
+        this.activity = activity;
     }
 }

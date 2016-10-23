@@ -38,4 +38,8 @@
         android:key="developer"
         android:title="@string/name"
         android:summary="@string/email" />
+    <Preference
+        android:key="logs"
+        android:title="@string/logs"
+        android:summary="@string/read_logs" />
 </PreferenceScreen>

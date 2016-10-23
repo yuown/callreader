@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import yuown.callreader.utils.Utils;
 
@@ -41,18 +42,20 @@ public class CallReceiver extends BroadcastReceiver {
                     t.putExtra("language", sharedPref.getString("language", ""));
                     t.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     t.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-                    t.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    t.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                    t.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                    t.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     context.startActivity(t);
                 }
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
                 if (incomingFlag) {
+                    Log.d("mLog", "OFF");
                     Popup.speechView.stopSpeaking();
                 }
                 break;
             case TelephonyManager.CALL_STATE_IDLE:
                 if (incomingFlag) {
+                    Log.d("mLog", "IDLE");
                     Popup.speechView.stopSpeaking();
                 }
                 break;
@@ -63,6 +66,7 @@ public class CallReceiver extends BroadcastReceiver {
         String contactName = Utils.readContact(context, incoming_number);
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append(sharedPref.getString("message", ""));
+        messageBuilder.append("... ");
         if (null == contactName) {
             messageBuilder.append(incoming_number);
         } else {

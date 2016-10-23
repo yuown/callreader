@@ -18,4 +18,6 @@
 
     <string name="name">Developed By</string>
     <string name="email">k3n / kiran.nk@yuown.com</string>
+    <string name="logs">Logs</string>
+    <string name="read_logs">Read Logs</string>
 </resources>
